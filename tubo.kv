@@ -1,0 +1,327 @@
+<TuboWindow>:
+    name: "tubo_imp"
+    size: root.width, root.height
+
+    GridLayout:
+        cols:1
+        canvas.before:
+            Color:
+                rgba: 0.3,0.4,0.5,0.4
+
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        Label:
+            text:"Tubo de impedância"
+            size_hint: 0.1,0.1
+            font_size: 20
+            color: 0.9,0.6,0.3,1
+            canvas.before:
+                Color:
+                    rgba: 0.3,0.5,0.5,0.4
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+        GridLayout:
+            cols:2
+            cols_minimum: {0:300, 1:50}
+            Label:
+                text:"Nome da medição"
+                font_size:20
+            TextInput:
+                id:med_name
+                multiline:False
+                font_size:20
+                text: ""
+
+            Label:
+                text:"Sinal:"
+                font_size:20
+            Spinner:
+                id: sinal
+                text: "Ruído Branco"
+                values: 'Ruído Branco', 'Sweep'
+                size_hint: [0.5,0.5]
+                height: '32dp'
+                background_color: 0.16 ,0.9 , 0.2, 0.9
+
+            Label:
+                text:"Sampling Rate:"
+                font_size:20
+            TextInput:
+                id: sample_rate
+                multiline:False
+                text:"44100"
+                write_tab: False
+
+            Label:
+                text:"FFT Degree"
+                font_size:20
+            TextInput:
+                id:fft_degree
+                multiline:False
+                text:"18"
+                write_tab: False
+
+            Label:
+                text:"Output Amplification"
+                font_size:20
+            TextInput:
+                id:out_amp
+                multiline:False
+                text: "-3"
+                write_tab: False
+
+            Label:
+                text:"Diâmetro do tubo (mm)"
+                font_size:20
+            TextInput:
+                id:tub_diam
+                multiline:False
+                text:'155'
+                write_tab: False
+
+            Label:
+                text:"Temperatura (ºC)"
+                font_size:20
+            TextInput:
+                id:temp
+                multiline:False
+                text:'20'
+                write_tab: False
+
+            Label:
+                text:"Distância entre os microfones (mm)"
+                font_size:20
+            TextInput:
+                id:dist_mic
+                multiline:False
+                text:'40'
+                write_tab: False
+
+            Label:
+                text:"Distância até o início da amostra (mm)"
+                font_size:20
+            TextInput:
+                id:dist_amst
+                multiline:False
+                text:'200'
+                write_tab: False
+
+            Label:
+                text:"Espessura da amostra (mm)"
+                font_size:20
+            TextInput:
+                id:L_amst
+                multiline:False
+                text:'35'
+                #on_touch_down: Clock.schedule_once(lambda dt: root.ids.L_amst.select_text(0,3))
+                write_tab: False
+
+            Label:
+                text:"Gap de ar entre amostra e fim do tubo (mm)"
+                font_size:20
+            TextInput:
+                id:gap_amst
+                multiline:False
+                text:'0'
+                on_double_tap: Clock.schedule_once(lambda dt: root.ids.gap_amst.select_text(0,2))
+                write_tab: False
+
+        GridLayout:
+            cols:2
+            size_hint: 1, 0.2
+            Button:
+                text:"Voltar"
+                on_release:
+                    app.root.current = "primeira"
+                    root.manager.transition.direction = "right"
+
+            Button:
+                id:btn4
+                text:"Iniciar"
+                on_release:
+                    app.root.current = "sig_mon_tubo"
+
+
+<PlotWindow>:
+    id: plt_wdw
+    name: "plot_wdw"
+    box: box
+
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    BoxLayout:
+        id: box
+        size_hint: 1, 0.75
+        pos_hint:{'x': 0, 'y': 0.22 }
+
+    Button:
+        text:'Voltar'
+        size_hint: 0.18, 0.12
+        pos_hint: {'x':0.2, 'y': 0.05 }
+        color: 1, 1, 1, 1
+        on_release:
+            root.clear()
+            root.backward(root.conta)
+    Button:
+        text:'Continuar'
+        size_hint: 0.18, 0.12
+        pos_hint: {'x':0.6, 'y': 0.05 }
+        color: 1, 1, 1, 1
+        on_release:
+            #root.popup_win()
+            root.clear()
+            root.forward(root.conta)
+    Button:
+        text:'Salvar'
+        size_hint: 0.18, 0.12
+        pos_hint: {'x':0.4, 'y': 0.05 }
+        color: 1, 1, 1, 1
+        on_release:
+            root.save()
+
+
+
+<PlotWindowConf>:
+    name: "plot_wdw2"
+    box2: box2
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        id: box2
+        size_hint: 1, 0.75
+        pos_hint:{'x': 0, 'y': 0.22 }
+
+    Button:
+        text:'Próximo'
+        font_size: 20
+        bold: True
+        size_hint: 0.18, 0.12
+        pos_hint: {'x': 0.6, 'y': 0.05 }
+        color: 1, 1, 1, 1
+        on_release:
+            app.root.current = "invert"
+            root.clear()
+    Button:
+        text:'Voltar'
+        font_size: 20
+        bold: True
+        size_hint: 0.18, 0.12
+        pos_hint: {'x':0.2, 'y': 0.05 }
+        color: 1, 1, 1, 1
+        on_release:
+            app.root.current = "tubo_imp"
+            root.clear()
+
+
+<Inverte>:
+    name: "invert"
+    size: root.width, root.height
+
+    canvas.before:
+        Color:
+            rgba: 0.4, 0.3, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'WAVE_LOGO_7_3_fundo.jpg'
+
+    GridLayout:
+        cols: 1
+        size: root.height, root.width
+        Label:
+            text:"Inverta a posição dos microfones"
+            multiline: True
+            font_size: 28
+            color: 1, 0.6, 0.3, 1
+            size_hint: 0.4,0.3
+            pos: 0.8, 0.8
+
+
+    Button:
+        id: back_btn
+        text: "Voltar"
+        bold: True
+        size_hint: 0.2, 0.15
+        pos_hint: {"x":0.2,"y":0.1}
+        on_release:
+            app.root.current = 'plot_wdw2'
+
+    Button:
+        id: plt_btn
+        text: "OK"
+        bold: True
+        size_hint: 0.2, 0.15
+        pos_hint: {"x":0.6,"y":0.1}
+        on_release:
+            app.root.current = 'sig_mon_tubo'
+
+<LabelIn@Label>
+    id:ch_lvl
+    text:'Input 1'
+    width: 10
+    font_size:23
+    color: 0,0,0,1
+    size: root.width, root.height
+    #anim_height: 0
+    canvas:
+        Color:
+            group:'color'
+            rgba: .7, .4, .6, 1
+
+
+
+
+<SigMonTubo>:
+    name: "sig_mon_tubo"
+    size: root.width, root.height
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'WAVE_LOGO_7_3_fundo.jpg'
+    GridLayout:
+        cols:2
+        size_hint: 1, 0.7
+        cols_minimum: {0:50, 1:400}
+
+        BoxLayout:
+            id: box_out
+            #size_hint: 1, 0.75
+            #pos_hint:{'x': 0, 'y': 0.22 }
+
+        BoxLayout:
+            id: box_in
+            #size_hint: 1, 0.75
+            #pos_hint:{'x': 0, 'y': 0.22 }
+
+    Button:
+        id:btn_back
+        text:'Voltar'
+        size_hint: 0.2, 0.15
+        pos_hint: {"x":0.2,"y":0.1}
+        on_release:
+            root.volta()
+            root.remove()
+
+    Button:
+        id:btn_ok
+        text:'OK'
+        size_hint: 0.2, 0.15
+        pos_hint: {"x":0.6,"y":0.1}
+        on_release:
+            root.remove()
+            root.segue()
+

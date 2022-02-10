@@ -1,0 +1,95 @@
+#:include tubo.kv
+#:include salas.kv
+#:include frf.kv
+#:include desempenho.kv
+#:import Clock kivy.clock.Clock
+
+WindowManager:
+    MainWindow:
+    TuboWindow:
+    RevWindow:
+    DesempenhoWindow:
+    PlotWindow:
+    PlotWindowConf:
+    SigMonTubo:
+        id:sig_mon_tubo
+    Inverte:
+    SigMonSala:
+        id:sig_mon_sala
+    SalaPlot1:
+    SelectPlot:
+    Warning:
+    FRFWindow:
+    SigMonFRF:
+        id:sig_mon_frf
+    PlotWindowFRF:
+    SigMonDes:
+        id:sig_mon_des
+    Aviso:
+    PlotWindowDes:
+
+<MainWindow>:
+    name: "primeira"
+
+    GridLayout:
+        cols:1
+        Button:
+            text:"[1] Tubo de impedância"
+            pos_hint: {"x":0.8,"top":1}
+            font_size: 45
+            id: btn1
+            size_hint: 0.4,0.5
+            size: 100,100
+            #color: 1,0.6,0.1,1
+            #background_color: 0.3,0.4,0.5,1
+            color: 0, 0, 0, 1
+            background_color: 1, 1, 1, 1
+            on_release:
+                app.root.current = "tubo_imp"
+                root.manager.transition.direction = "left"
+        Button:
+            text:"[2] Acústica de Salas"
+            pos_hint: {"x":0.8,"top":0.75}
+            font_size: 45
+            id: btn2
+            size_hint: 0.4,0.5
+            size: 100,100
+            #color: 0,0.5,0.8,1
+            #background_color: 0.3,0.4,0.5,1
+            color: 0, 0, 0, 1
+            background_color: 1, 1, 1, 1
+            on_release:
+                app.root.current = "par_salas"
+                root.manager.transition.direction = "left"
+
+
+        Button:
+            text:"[3] Desempenho"
+            pos_hint: {"x":0.8,"top":0.5}
+            font_size: 45
+            id: btn4
+            size_hint: 0.4,0.5
+            size: 100,100
+            #color: 0.9,0.4,0.2,1
+            #background_color: 0.3,0.4,0.5,1
+            color: 0, 0, 0, 1
+            background_color: 1, 1, 1, 1
+            on_release:
+                app.root.current = "desemp_wdw"
+                root.manager.transition.direction = "left"
+
+
+        Button:
+            text:"[4] FRF"
+            pos_hint: {"x":0.8,"top":0.25}
+            font_size: 45
+            id: btn3
+            size_hint: 0.4,0.5
+            size: 100,100
+            #color: 0.3,0.5,0.2,1
+            #background_color: 0.3,0.4,0.5,1
+            color: 0, 0, 0, 1
+            background_color: 1, 1, 1, 1
+            on_release:
+                app.root.current = "frf_wdw"
+                root.manager.transition.direction = "left"

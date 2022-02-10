@@ -1,0 +1,270 @@
+<DesempenhoWindow>:
+    name:'desemp_wdw'
+    size: root.width, root.height
+    GridLayout:
+        cols:1
+        canvas.before:
+            Color:
+                rgba: 0.3,0.4,0.5,0.4
+
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        Label:
+            text:"Desempenho de ruído aéreo"
+            size_hint: 0.1,0.1
+            font_size: 20
+            color: 0.9,0.6,0.3,1
+            canvas.before:
+                Color:
+                    rgba: 0.3,0.5,0.5,0.4
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+        GridLayout:
+            cols:2
+            cols_minimum: {0:300, 1:50}
+            Label:
+                text:"Nome da medição"
+                font_size:20
+            TextInput:
+                id:med_name
+                multiline:False
+                font_size:20
+                text: ""
+
+            Label:
+                text:"Sinal:"
+                font_size:20
+            Spinner:
+                id: sinal
+                text: "Ruído Branco"
+                values: 'Ruído Branco', 'Sweep'
+                size_hint: [0.5,0.5]
+                height: '32dp'
+                background_color: 0.16 ,0.9 , 0.2, 0.9
+                #on_text:
+                    #sig=self.text
+                    #print(sig)
+            Label:
+                text:"Frequência Mínima:"
+                font_size:20
+            TextInput:
+                id: f_min
+                multiline:False
+                text:"100"
+                write_tab: False
+
+            Label:
+                text:"Frequência Máxima:"
+                font_size:20
+            TextInput:
+                id: f_max
+                multiline:False
+                text:"5000"
+                write_tab: False
+
+            Label:
+                text:"Número de canais de entrada:"
+                font_size:20
+            Spinner:
+                id: num_ch_in
+                text: "2"
+                values: '1', '2', '3', '4'
+                size_hint: [0.5,0.5]
+                height: '32dp'
+                background_color: 0.16 ,0.9 , 0.2, 0.9
+
+            Label:
+                text:"Número de canais de saída:"
+                font_size:20
+            Spinner:
+                id: num_ch_out
+                text: "1"
+                values: '1', '2'
+                size_hint: [0.5,0.5]
+                height: '32dp'
+                background_color: 0.16 ,0.9 , 0.2, 0.9
+
+            Label:
+                text:"Sampling Rate:"
+                font_size:20
+            TextInput:
+                id: sample_rate
+                multiline:False
+                text:"44100"
+                write_tab: False
+
+
+            Label:
+                text:"FFT Degree"
+                font_size:20
+            TextInput:
+                id:fft_degree
+                multiline:False
+                text:"18"
+                write_tab: False
+
+            Label:
+                text:"Output Amplification"
+                font_size:20
+            TextInput:
+                id:out_amp
+                multiline:False
+                text: "-3"
+                write_tab: False
+
+        GridLayout:
+            cols:2
+            size_hint: 1, 0.2
+            Button:
+                text:"Voltar"
+                on_release:
+                    app.root.current = "primeira"
+                    root.manager.transition.direction = "right"
+
+            Button:
+                id:btn4
+                text:"Iniciar"
+                on_release:
+                    app.root.current = "sig_mon_des"
+
+<LabelIn@Label>:
+    id:ch_lvl
+    text:'Input 1'
+    width: 10
+    font_size:23
+    color: 0,0,0,1
+    size: root.width, root.height
+    #anim_height: 0
+    canvas:
+        Color:
+            group:'clr'
+            rgba: 1, 1, 1, 1
+
+
+<SigMonDes>:
+    name:"sig_mon_des"
+    size: root.width, root.height
+    canvas.before:
+        Color:
+            #rgba: 0.3, 0.2, 0.3, 1
+            rgba: 0.3, 0.5, 0, 0, 0
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'WAVE_LOGO_7_3_fundo.jpg'
+    GridLayout:
+        cols: 2
+        size_hint: 1, 0.7
+        cols_minimum: {0:50, 1:400}
+        BoxLayout:
+            id:box_out
+
+        BoxLayout:
+            id:box_in
+    Button:
+        id:btn_back
+        text:'Voltar'
+        size_hint: 0.2, 0.15
+        pos_hint: {"x":0.2,"y":0.1}
+        on_release:
+            #app.root.current = 'desemp_wdw'
+            root.decrementa()
+            root.remove()
+            root.segue()
+
+    Button:
+        id:btn_ok
+        text:'OK'
+        size_hint: 0.2, 0.15
+        pos_hint: {"x":0.6,"y":0.1}
+        on_release:
+            app.root.current = 'aviso'
+            root.remove()
+            root.segue()
+
+
+<Aviso>:
+    name:'aviso'
+    size: root.width, root.height
+
+#    canvas.before:
+#        Color:
+#            rgba: 0.4, 0.3, 1, 1
+#        Rectangle:
+#            pos: self.pos
+#            size: self.size
+#            source: 'WAVE_LOGO_7_3_fundo.jpg'
+
+    GridLayout:
+        cols:1
+        size: self.size
+
+        Label:
+            id:texto_aviso
+            text:"Leve os MICROFONES para a sala RECEPTORA, \n sem alterar os ganhos da placa. \n Quando os equipamentos estiverem  \n corretamente posicionados, clique em 'OK'."
+            color: .2, 0.1, 0.9, 1
+            font_size: 28
+            size_hint: 0.4, .3
+            pos_hint: {'x': .4, 'top': .8}
+
+    Button:
+        id:btn_back
+        text:'Voltar'
+        size_hint: 0.2, 0.15
+        pos_hint: {"x":0.2,"y":0.1}
+        on_release:
+            app.root.current = 'desemp_wdw'
+            root.decrementa()
+
+
+    Button:
+        id:btn_ok
+        text:'OK'
+        size_hint: 0.2, 0.15
+        pos_hint: {"x":0.6,"y":0.1}
+        on_release:
+            app.root.current = 'sig_mon_des'
+
+
+<PlotWindowDes>:
+    name:'plot_wdw_des'
+    id: desemp_plot
+    box: box
+
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    BoxLayout:
+        id: box
+        size_hint: 1, 0.75
+        pos_hint:{'x': 0, 'y': 0.22 }
+
+    Button:
+        text:'Voltar'
+        font_size: 20
+        bold: True
+        size_hint: 0.18, 0.12
+        pos_hint: {'x': 0.2, 'y': 0.05 }
+        color: 1, 1, 1, 1
+        on_release:
+            app.root.current='desemp_wdw'
+            root.clear()
+
+    Button:
+        text:'Salvar'
+        font_size: 20
+        bold: True
+        size_hint: 0.18, 0.12
+        pos_hint: {'x': 0.6, 'y': 0.05 }
+        color: 1, 1, 1, 1
+
+        on_release:
+            root.save()
+            app.root.current='primeira'
+            root.clear()
